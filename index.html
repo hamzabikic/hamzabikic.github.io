@@ -78,6 +78,7 @@
             margin-top:20px;
             height:20px;
             cursor:pointer;
+            text-align: center;
         }
         h3 {
             color:white;
@@ -101,12 +102,62 @@
         #tabela th{
             border:1px solid white;
             padding:5px;
+            text-align: center;
         }
         #tabela td {
             border:1px solid white;
             padding:5px;
+            text-align:center;
         }
-        
+        @media only screen and (max-width:890px) {
+            #lijevo{
+                width:100%;
+                padding:20px;
+                box-sizing: border-box;
+                clear:left;
+            }
+            #desno {
+                clear:right;
+                width:100%;
+                padding:20px;
+                box-sizing: border-box;
+            }
+            #inputi {
+                width:100%;
+                margin-top:10px;
+            }
+            textarea {
+                width:100%;
+            }
+            button {
+             left:0;
+             margin-top:5px;
+            }
+            label {
+                margin-top:10px;
+            }
+            #informacije {
+                width:100%;
+                clear:left;
+                padding-left:10px;
+               padding-right:10px;
+            }
+            #tabela {
+                width:100%;
+                border:0px;
+            }
+        }
+        @media only screen and (max-width:390px) {
+            a {
+                height:50px;
+            }
+            #tabela th, #tabela td {
+                padding:0px;
+            }
+            #informacije {
+                padding:0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -121,7 +172,7 @@
             Svako slovo originalne poruke zamijeni se dvocifrenim brojem 
             ovisno o njegovoj poziciji u abecedi bez obzira da li se radi o malim ili velikim slovima:
         </p>
-        <table id="tabela">
+        <table class ="tabla" id="tabela">
             <tr>
                 <th>01</th>
                 <th>02</th>
@@ -472,20 +523,6 @@
 <td>a
 </td></tr></tbody></table>
     </div>
-    <div id = "desno">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Vigenere.png">
-        <p>
-            Blez de Vižner (franc. Blaise de Vigenère; 5. april 1523 — 1596), francuski diplomat i kriptograf.
-             Vižnerova šifra je po njemu dobila ime, jer je pogrešno pripisana njemu u 19. veku 
-             (Đovan Batista Belazo, ital. Giovan Battista Bellaso, prvi pominje ovu šifru).
-        </p>
-        <p>
-            U svojoj knjizi „Traktatu o šiframa“ opisao je šifru koja je kasnije po njemu dobila ime i šifru 
-            sa „autoključem“ koju je sam otkrio - to je prva šifra do tada koja se ne razbija lako.
-             Vižnerova šifra je dugo imala epitet „neprobojna“, tek skoro 300 godina kasnije (1850) 
-             je grof Čarls Bebidž uspeo da je razbije.
-        </p>
-    </div>
     <div id ="lijevo">
         <div id ="inputi">
          <label>Sifra: </label>
@@ -502,6 +539,20 @@
          </textarea>
          <button onclick="dekriptuj()" id ="dekripcija">Dekriptuj</button>
         </div>
+    </div>
+    <div id = "desno">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Vigenere.png">
+        <p>
+            Blez de Vižner (franc. Blaise de Vigenère; 5. april 1523 — 1596), francuski diplomat i kriptograf.
+             Vižnerova šifra je po njemu dobila ime, jer je pogrešno pripisana njemu u 19. veku 
+             (Đovan Batista Belazo, ital. Giovan Battista Bellaso, prvi pominje ovu šifru).
+        </p>
+        <p>
+            U svojoj knjizi „Traktatu o šiframa“ opisao je šifru koja je kasnije po njemu dobila ime i šifru 
+            sa „autoključem“ koju je sam otkrio - to je prva šifra do tada koja se ne razbija lako.
+             Vižnerova šifra je dugo imala epitet „neprobojna“, tek skoro 300 godina kasnije (1850) 
+             je grof Čarls Bebidž uspeo da je razbije.
+        </p>
     </div>
     <footer id="podnozje">Napomena: Ova enkripcija podržava samo slova iz bosanske/
         hrvatske/srpske abecede, bez znakova č,ć,dž,đ,nj,š
@@ -681,6 +732,16 @@
         document.getElementById("podnozje").style.display="block";
         ocistiTextAreas();
        }
-    
+    function podijeliTabelu() {
+        if(document.documentElement.clientWidth <800){
+       var tabela = document.getElementsByClassName("tabla")[0];
+       tabela.innerHTML = " <tr><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th><th>06</th><th>07</th><th>08</th><th>09</th><th>10</th></tr>\n"
+       +"<tr><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>\n"
+       +"<tr> <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th></tr>\n"
+       +"<tr> <td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>Z</td></tr>";
+        }
+    }
+   podijeliTabelu();
+   addEventListener("resize",podijeliTabelu);
 </script>
 </html>
