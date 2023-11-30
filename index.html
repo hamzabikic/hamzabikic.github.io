@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Smart home by Hamza</title>
     <style>
         body {
             background-color: rgb(26,54,93);
@@ -59,6 +59,23 @@
         @media (max-width:600px){
             #informacije{
                width:100%;
+            }
+        }
+        @media (max-width:400px) {
+            label {
+                font-size:15px;
+            }
+            .vrijednost {
+                font-size:15px;
+            }
+            span {
+                font-size:15px;
+            }
+            button {
+                padding:5px;
+            }
+            img{
+                width:250px;
             }
         }
     
@@ -165,7 +182,7 @@
             (snapshot)=>{
                 if (snapshot.exists()) {
                     temperatura.innerHTML = String(snapshot.val().Temperature) +" °C";
-                    vlaznost.innerHTML = String(snapshot.val().Humidity);
+                    vlaznost.innerHTML = String(snapshot.val().Humidity) + "%";
                     co2.innerHTML = String(snapshot.val().CO2);
                     if(co2.innerHTML > 200) {
                         co2.style.color = "red";
