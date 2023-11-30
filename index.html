@@ -98,13 +98,20 @@
         <div style="color:rgb(0, 102, 255);" class ="vrijednost" id="vlaznost_zraka"> </div>
     </div>
     <div class="info">
-        <label>CO2 value:</label>
+        <label>GAS Sensor:</label>
         <div class="vrijednost" id="CO2_kolicina"></div>
     </div>
     <div class ="info">
-        <label>CO2 Alarm:</label>
+        <label>CO2/Fire Alarm:</label>
         <div class="vrijednost" id="alarm" ></div>
         <button style ="margin-left:10px" id="ugasi_alarm">Turn off</button>
+    </div>
+    <div class ="info">
+        <label>Fire detected:</label>
+        <div class="vrijednost" id="fire_detected"></div>
+    </div>
+    <div class="info">
+        <button id="delete_fire">Remove detection</button>
     </div>
 <div class="info">
     <label>Security system</label>
@@ -158,6 +165,7 @@
     var senzor_pokreta = document.getElementById("senzor_pokreta");
     var alarm = document.getElementById("alarm");
     var alarmPokret = document.getElementById("alarmPokret");
+    var fireDetected = document.getElementById("fire_detected");
     function InsertData() {
         set(ref(db, "Sensors/"), {
            Temperature: vrijednost.value
@@ -185,6 +193,14 @@
                     temperatura.innerHTML = String(snapshot.val().Temperature) +" °C";
                     vlaznost.innerHTML = String(snapshot.val().Humidity) + "%";
                     co2.innerHTML = String(snapshot.val().CO2);
+                    if (snapshot.val().FireSensor == 1) {
+                    fireDetected.innerHTML = "Yes";
+                    fireDetected.style.color ="red";
+                    }
+                    else {
+                    fireDetected.innerHTML = "No";
+                    fireDetected.style.color ="green";
+                    }
                     if(co2.innerHTML > 200) {
                         co2.style.color = "red";
                     }
@@ -326,11 +342,24 @@
             alert("Greska: " + err);
         });
     }
+    function deleteDetection () {
+        fireDetected.innerHTML = "No";
+        fireDetected.style.color = "green";
+        update(ref(db, "Sensors/"), {
+           FireSensor:0
+        }).then(()=>{
+            console.log("Podaci uspjesno ucitani!");
+        }).catch((err)=> {
+          console.log ("Greska: " +err);
+        });
+        UgasiAlarm();
+    }
     //document.getElementById("azuriraj").onclick = Load;
     document.getElementById("ugasi_alarm").onclick = UgasiAlarm;
     document.getElementById("pokret").onclick = PonistiPokret;
     document.getElementById("aktivacija").onclick = AktivacijaSigurnosnogSustava;
     document.getElementById("deaktivacija").onclick = DeaktivacijaSigurnosnogSustava;
+    document.getElementById("delete_fire").onclick = deleteDetection;
     setInterval(Load, 1000);
     var pokretiInterval = setInterval(UcitajPokret,1000);
     UcitajStanje();
