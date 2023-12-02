@@ -182,6 +182,8 @@
         });
     }
     //document.getElementById("dugme").onclick = UpdateData;
+    var obavjestenjeGas = false;
+    var obavjestenjeVatra = false;
     function Load() {
         const dbref = ref(db);
         get(child(dbref, "Sensors/")).then(
@@ -193,16 +195,25 @@
                     if (snapshot.val().FireSensor == 1) {
                     fireDetected.innerHTML = "Yes";
                     fireDetected.style.color ="red";
+                    if (obavjestenjeVatra == false) {
+                    alert("Detektovan požar!");
+                    obavjestenjeVatra = true;  }
                     }
                     else {
                     fireDetected.innerHTML = "No";
                     fireDetected.style.color ="green";
+                    obavjestenjeVatra = false;
                     }
                     if(co2.innerHTML > 200) {
                         co2.style.color = "red";
+                        if(obavjestenjeGas == false) {
+                            alert("Detektovano puštanje gasa u prostoru!");
+                            obavjestenjeGas = true;
+                        }
                     }
                     else {
                         co2.style.color = "green";
+                        obavjestenjeGas = false;
                     }
                     if(snapshot.val().AlarmCO2 ==1){
                         alarm.innerHTML="Activated";
@@ -255,7 +266,8 @@
                         senzor_pokreta.style.color ="red";
                         alarmPokret.innerHTML = "Activated";
                         alarmPokret.style.color ="red"
-                        clearInterval(UcitajPokret);
+                        clearInterval(pokretiInterval);
+                        alert("Detektovano kretanje u prostoru!");
                     }
                     else {
                         senzor_pokreta.innerHTML = "Not scanned";
