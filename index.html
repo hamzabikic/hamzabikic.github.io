@@ -256,6 +256,7 @@
         alarm.style.color = "green";
         deleteDetection();
     }
+    var notifikacijaPokret = false;
     function UcitajPokret() {
         const dbref = ref(db);
         get(child(dbref, "Sensors/")).then(
@@ -267,7 +268,10 @@
                         alarmPokret.innerHTML = "Activated";
                         alarmPokret.style.color ="red"
                         clearInterval(pokretiInterval);
-                        alert("Detektovano kretanje u prostoru!");
+                        if(notifikacijaPokret == false) {
+                        alert("Detektovano kretanje u prostoru!")
+                        notifikacijaPokret = true; 
+                    }
                     }
                     else {
                         senzor_pokreta.innerHTML = "Not scanned";
@@ -308,6 +312,7 @@
         });
         pokretiInterval = setInterval(UcitajPokret,1000);
         UgasiAlarmPokreta();
+        notifikacijaPokret = false;
     }
     function AktivacijaSigurnosnogSustava() {
         update(ref(db, "Sensors/"), {
