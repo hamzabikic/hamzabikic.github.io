@@ -102,16 +102,13 @@
         <div class="vrijednost" id="CO2_kolicina"></div>
     </div>
     <div class ="info">
-        <label>CO2/Fire Alarm:</label>
+        <label>GAS/Fire Alarm:</label>
         <div class="vrijednost" id="alarm" ></div>
-        <button style ="margin-left:10px" id="ugasi_alarm">Turn off</button>
+        <button style ="margin-left:10px;" id="ugasi_alarm">Turn off</button>
     </div>
     <div class ="info">
         <label>Fire detected:</label>
         <div class="vrijednost" id="fire_detected"></div>
-    </div>
-    <div class="info">
-        <button id="delete_fire">Remove detection</button>
     </div>
 <div class="info">
     <label>Security system</label>
@@ -225,6 +222,17 @@
             alert("Greska: " + err);
         });
     }
+    function deleteDetection () {
+        fireDetected.innerHTML = "No";
+        fireDetected.style.color = "green";
+        update(ref(db, "Sensors/"), {
+           FireSensor:0
+        }).then(()=>{
+            console.log("Podaci uspjesno ucitani!");
+        }).catch((err)=> {
+          console.log ("Greska: " +err);
+        });
+    }
     export function UgasiAlarm() {
         update(ref(db, "Sensors/"), {
            AlarmCO2:0
@@ -235,6 +243,7 @@
         });
         alarm.innerHTML ="Deactivated";
         alarm.style.color = "green";
+        deleteDetection();
     }
     function UcitajPokret() {
         const dbref = ref(db);
@@ -342,24 +351,11 @@
             alert("Greska: " + err);
         });
     }
-    function deleteDetection () {
-        fireDetected.innerHTML = "No";
-        fireDetected.style.color = "green";
-        update(ref(db, "Sensors/"), {
-           FireSensor:0
-        }).then(()=>{
-            console.log("Podaci uspjesno ucitani!");
-        }).catch((err)=> {
-          console.log ("Greska: " +err);
-        });
-        UgasiAlarm();
-    }
     //document.getElementById("azuriraj").onclick = Load;
     document.getElementById("ugasi_alarm").onclick = UgasiAlarm;
     document.getElementById("pokret").onclick = PonistiPokret;
     document.getElementById("aktivacija").onclick = AktivacijaSigurnosnogSustava;
     document.getElementById("deaktivacija").onclick = DeaktivacijaSigurnosnogSustava;
-    document.getElementById("delete_fire").onclick = deleteDetection;
     setInterval(Load, 1000);
     var pokretiInterval = setInterval(UcitajPokret,1000);
     UcitajStanje();
